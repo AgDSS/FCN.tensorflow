@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.contrib.data import Dataset, Iterator
+from tensorflow.data import Dataset, Iterator
 
 class DatasetReader:
     filenames = []
