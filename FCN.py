@@ -20,15 +20,15 @@ tf.flags.DEFINE_bool('image_augmentation', "False", "Image augmentation: True/ F
 tf.flags.DEFINE_float('dropout', "0.5", "Probably of keeping value in dropout (valid values (0.0,1.0]")
 tf.flags.DEFINE_string('mode', "train", "Mode train/ test/ visualize/ predict") #test not implemented
 tf.flags.DEFINE_integer("num_classes", "2", "batch size for training")
-tf.flags.DEFINE_integer("image_size", "(224, 224)", "batch size for training")
-
+tf.flags.DEFINE_integer("image_height", "224", "batch size for training")
+tf.flags.DEFINE_integer("image_width", "224", "batch size for training")
 
 MODEL_URL = 'http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat'
 
 MAX_ITERATION = int(1e5 + 1)
 NUM_OF_CLASSESS = FLAGS.num_classes
 # IMAGE_SIZE = 224
-IMAGE_WIDTH, IMAGE_HEIGHT = FLAGS.image_size
+IMAGE_WIDTH, IMAGE_HEIGHT = FLAGS.image_width, FLAGS.image_height
 
 
 def vgg_net(weights, image):
