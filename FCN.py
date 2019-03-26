@@ -194,8 +194,8 @@ def main(argv=None):
 
         # create two summary writers to show training loss and validation loss in the same graph
         # need to create two folders 'train' and 'validation' inside FLAGS.logs_dir
-        train_writer = tf.summary.FileWriter(FLAGS.logs_dir + '/train', sess.graph)
-        validation_writer = tf.summary.FileWriter(FLAGS.logs_dir + '/validation')
+        train_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'train'), sess.graph)
+        validation_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'validation'))
 
         sess.run(tf.global_variables_initializer())
         ckpt = tf.train.get_checkpoint_state(FLAGS.logs_dir)
@@ -235,7 +235,7 @@ def main(argv=None):
 
                     # add validation loss to TensorBoard
                     validation_writer.add_summary(summary_sva, i)
-                    saver.save(sess, FLAGS.logs_dir + "model.ckpt", i)
+                    saver.save(sess, os.path.join(FLAGS.logs_dir, "model.ckpt"), i)
                     #sess.run(training_init_op)
 
 
