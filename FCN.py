@@ -266,14 +266,14 @@ def main(argv=None):
             if not os.path.exists(os.path.join(FLAGS.logs_dir, "predictions")):
                 os.makedirs(os.path.join(FLAGS.logs_dir, "predictions"))
             for i in range(no_predict_images):
-                if (i % 10 == 0):
-                    print("Predicted {}/{} images".format(i, no_predict_images))
+                if ((i + 1) % 10 == 0 or (i + 1) == no_predict_images):
+                    print("Predicted {}/{} images".format(i + 1, no_predict_images))
                 predict_images, predict_names = sess.run(next_test_image)
                 pred = sess.run(pred_annotation, feed_dict={image: predict_images,
                                                             keep_probability: 1.0})
                 pred = np.squeeze(pred, axis=3)
                 utils.save_image((pred[0] * 255).astype(np.uint8), os.path.join(FLAGS.logs_dir, "predictions"),
-                                 name="predict_" + str(predict_names))
+                                 name= predict_names[0].decode('UTF-8'))
         
 #         predict_records = scene_parsing.read_prediction_set(FLAGS.data_dir)
 #         no_predict_images = len(predict_records)
