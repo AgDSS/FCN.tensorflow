@@ -30,7 +30,6 @@ NUM_OF_CLASSESS = FLAGS.num_classes
 # IMAGE_SIZE = 224
 IMAGE_WIDTH, IMAGE_HEIGHT = FLAGS.image_width, FLAGS.image_height
 
-
 def vgg_net(weights, image):
     layers = (
         'conv1_1', 'relu1_1', 'conv1_2', 'relu1_2', 'pool1',
@@ -173,13 +172,13 @@ def main(argv=None):
 
         print("Setting up image reader...")
     train_records, valid_records = scene_parsing.read_dataset(FLAGS.data_dir)
-    print("No. train records: ", len(train_records))
-    print("No. validation records: ", len(valid_records))
+    if FLAGS.mode == "train":
+        print("No. train records: ", len(train_records))
+        print("No. validation records: ", len(valid_records))
 
-    print("Setting up dataset reader")
-    image_options_train = {'resize': True, 'resize_width': IMAGE_WIDTH, 'resize_height': IMAGE_HEIGHT, 'image_augmentation':FLAGS.image_augmentation}
-    image_options_val = {'resize': True, 'resize_width': IMAGE_WIDTH, 'resize_height': IMAGE_HEIGHT}
-    if FLAGS.mode == 'train':
+        print("Setting up dataset reader")
+        image_options_train = {'resize': True, 'resize_width': IMAGE_WIDTH, 'resize_height': IMAGE_HEIGHT, 'image_augmentation':FLAGS.image_augmentation}
+        image_options_val = {'resize': True, 'resize_width': IMAGE_WIDTH, 'resize_height': IMAGE_HEIGHT}
         train_val_dataset = dataset.TrainVal.from_records(
             train_records, valid_records, image_options_train, image_options_val, FLAGS.batch_size, FLAGS.batch_size)
     #validation_dataset_reader = dataset.BatchDatset(valid_records, image_options_val)
@@ -194,8 +193,9 @@ def main(argv=None):
 
         # create two summary writers to show training loss and validation loss in the same graph
         # need to create two folders 'train' and 'validation' inside FLAGS.logs_dir
-        train_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'train'), sess.graph)
-        validation_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'validation'))
+        if FLAGS.mode == 'train':
+            train_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'train'), sess.graph)
+            validation_writer = tf.summary.FileWriter(os.path.join(FLAGS.logs_dir, 'validation'))
 
         sess.run(tf.global_variables_initializer())
         ckpt = tf.train.get_checkpoint_state(FLAGS.logs_dir)

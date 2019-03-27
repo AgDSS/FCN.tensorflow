@@ -17,7 +17,7 @@ def read_prediction_set(data_dir):
         return None
     file_list = []
     image_list = []
-    file_glob = os.path.join(data_dir, '*.' + 'png')
+    file_glob = os.path.join(data_dir, '*.' + 'JPG')
     file_list.extend(glob.glob(file_glob))
 
     if not file_list:
